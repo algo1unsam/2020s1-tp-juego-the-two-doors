@@ -3,6 +3,20 @@ import pepita.*
 
 program game {
 	game.title("Juego Base")
-	game.addVisual(pepita)
+	game.cellSize(20)
+	game.height(16)
+	game.width(32)
+	
+	const opcion_izquierda = game.at(9,8)
+	const opcion_derecha = game.at(23,8)
+	
+	//Prototipo, aplicar en objeto jugador/personaje al diseñarlo
+	keyboard.left().onPressDo { pepita.position(opcion_izquierda) }
+	keyboard.right().onPressDo { pepita.position(opcion_derecha) }
+	
+	//De nuevo, implementar en personaje
+	pepita.position(opcion_izquierda)
+	
+	game.addVisualCharacter(pepita)
 	game.start()
 }
