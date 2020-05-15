@@ -4,11 +4,12 @@ import pepita.*
 program game {
 	game.title("Juego Base")
 	game.cellSize(20)
-	game.height(16)
+	game.height(18)
 	game.width(32)
+	game.boardGround("back.png")
 	
-	const opcion_izquierda = game.at(9,8)
-	const opcion_derecha = game.at(23,8)
+	const opcion_izquierda = game.at(10,4)
+	const opcion_derecha = game.at(21,4)
 	
 	//Prototipo, aplicar en objeto jugador/personaje al diseñarlo
 	keyboard.left().onPressDo { pepita.position(opcion_izquierda) }
