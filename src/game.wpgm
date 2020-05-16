@@ -1,15 +1,16 @@
 import wollok.game.*
 import pepita.*
+import fondo.*
 
 program game {
-	game.title("Juego Base")
+	game.title("Two Doors")
 	game.cellSize(20)
 	game.height(18)
 	game.width(32)
-	game.boardGround("back.png")
+	game.boardGround("black.png")
 	
-	const opcion_izquierda = game.at(10,4)
-	const opcion_derecha = game.at(21,4)
+	const opcion_izquierda = game.at(9,4)
+	const opcion_derecha = game.at(22,4)
 	
 	//Prototipo, aplicar en objeto jugador/personaje al diseñarlo
 	keyboard.left().onPressDo { pepita.position(opcion_izquierda) }
@@ -18,6 +19,8 @@ program game {
 	//De nuevo, implementar en personaje
 	pepita.position(opcion_izquierda)
 	
-	game.addVisualCharacter(pepita)
+		
+	game.addVisualIn(fondoGrafico, game.at(0,0))
+	game.addVisual(pepita)
 	game.start()
 }
