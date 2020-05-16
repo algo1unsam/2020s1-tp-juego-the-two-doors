@@ -15,6 +15,14 @@ program game {
 	//Prototipo, aplicar en objeto jugador/personaje al diseñarlo
 	keyboard.left().onPressDo { pepita.position(opcionIzquierda) }
 	keyboard.right().onPressDo { pepita.position(opcionDerecha) }
+	keyboard.enter().onPressDo { 
+		if (pepita.position().equals(opcionIzquierda)) 
+			{fondoGrafico.cambiarFondo("izquierda") } 
+		else if (pepita.position().equals(opcionDerecha)) 
+			{fondoGrafico.cambiarFondo("derecha") }
+		else
+			{fondoGrafico.cambiarFondo("default") }
+	}
 	
 	//De nuevo, implementar en personaje
 	pepita.position(opcionIzquierda)

@@ -15,12 +15,11 @@ object fondoGrafico {
 	}
 	
 	method fondoDefault() = fondosDisponibles.get("default")
-	method obtenerFondoGrafico(nombre){
-		try {
-			fondoActual = fondosDisponibles.getOrElse(nombre, self.fondoDefault())
-		} catch e {
+	method cambiarFondo(nombre){
+		if (fondosDisponibles.keys().contains(nombre))
+			fondoActual = nombre
+		else
 			throw new MessageNotUnderstoodException()
-		}
 	}
 	
 }
