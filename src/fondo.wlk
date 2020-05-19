@@ -1,7 +1,7 @@
 import wollok.game.*
 
 object fondoGrafico {
-	const fondosDisponibles = new Dictionary()//Wollok explota si se setea a diccionario...
+	const fondosDisponibles = new Dictionary()
 	
 	var property fondoActual = "default"
 	method image() =  fondosDisponibles.get(fondoActual)
