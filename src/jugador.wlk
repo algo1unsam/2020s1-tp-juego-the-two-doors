@@ -10,7 +10,7 @@ object jugador {
 	method switchCutscene() { enCutscene = not(enCutscene) }
 	
 	method elegirPuerta(nuevaPuerta) {
-		self.position(puerta.position().down(2))
+		self.position(nuevaPuerta.position().down(2))
 		puerta = nuevaPuerta
 	}
 	

@@ -1,6 +1,7 @@
 import wollok.game.*
 import jugador.*
 import fondo.*
+import puertas.*
 
 program game {
 	game.title("Two Doors")
@@ -9,25 +10,22 @@ program game {
 	game.width(32)
 	game.boardGround("black.png")
 	
-	const opcionIzquierda = game.at(9,4)
-	const opcionDerecha = game.at(22,4)
+	const puertaIzquierda = new Puerta(
+		position=game.at(9,6),
+		accion="izquierda"
+	)
 	
-	//Prototipo, aplicar en objeto jugador/personaje al diseñarlo
-	//Diseñar puerta que maneje cambios de fondo etc
-	keyboard.left().onPressDo { jugador.position(opcionIzquierda) }
-	keyboard.right().onPressDo { jugador.position(opcionDerecha) }
-	keyboard.enter().onPressDo { 
-		if (jugador.position().equals(opcionIzquierda)) 
-			{fondoGrafico.cambiarFondo("izquierda") } 
-		else if (jugador.position().equals(opcionDerecha)) 
-			{fondoGrafico.cambiarFondo("derecha") }
-		else
-			{fondoGrafico.cambiarFondo("default") }
-	}
+	const puertaDerecha = new Puerta(
+		position=game.at(22,6),
+		accion="derecha"
+	)
 	
-	//De nuevo, implementar en personaje
-	jugador.position(opcionIzquierda)
+	keyboard.left().onPressDo { jugador.elegirPuerta(puertaIzquierda) }
+	keyboard.right().onPressDo { jugador.elegirPuerta(puertaDerecha) }
+	keyboard.enter().onPressDo { jugador.abrirPuerta() }
 	
+	//Eleccion por defecto, TODO actualizar al mover de cuarto
+	jugador.elegirPuerta(puertaIzquierda)
 		
 	game.addVisualIn(fondoGrafico, game.at(0,0))
 	game.addVisual(jugador)
