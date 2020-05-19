@@ -1,5 +1,5 @@
 import wollok.game.*
-import pepita.*
+import jugador.*
 import fondo.*
 
 program game {
@@ -13,22 +13,23 @@ program game {
 	const opcionDerecha = game.at(22,4)
 	
 	//Prototipo, aplicar en objeto jugador/personaje al diseñarlo
-	keyboard.left().onPressDo { pepita.position(opcionIzquierda) }
-	keyboard.right().onPressDo { pepita.position(opcionDerecha) }
+	//Diseñar puerta que maneje cambios de fondo etc
+	keyboard.left().onPressDo { jugador.position(opcionIzquierda) }
+	keyboard.right().onPressDo { jugador.position(opcionDerecha) }
 	keyboard.enter().onPressDo { 
-		if (pepita.position().equals(opcionIzquierda)) 
+		if (jugador.position().equals(opcionIzquierda)) 
 			{fondoGrafico.cambiarFondo("izquierda") } 
-		else if (pepita.position().equals(opcionDerecha)) 
+		else if (jugador.position().equals(opcionDerecha)) 
 			{fondoGrafico.cambiarFondo("derecha") }
 		else
 			{fondoGrafico.cambiarFondo("default") }
 	}
 	
 	//De nuevo, implementar en personaje
-	pepita.position(opcionIzquierda)
+	jugador.position(opcionIzquierda)
 	
 		
 	game.addVisualIn(fondoGrafico, game.at(0,0))
-	game.addVisual(pepita)
+	game.addVisual(jugador)
 	game.start()
 }
