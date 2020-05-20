@@ -14,7 +14,6 @@ program game {
 		position=game.at(9,6),
 		accion="izquierda"
 	)
-	
 	const puertaDerecha = new Puerta(
 		position=game.at(22,6),
 		accion="derecha"
@@ -23,6 +22,10 @@ program game {
 	keyboard.left().onPressDo { jugador.elegirPuerta(puertaIzquierda) }
 	keyboard.right().onPressDo { jugador.elegirPuerta(puertaDerecha) }
 	keyboard.enter().onPressDo { jugador.abrirPuerta() }
+	
+	//comandos debug de sonido
+	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }
+	keyboard.z().onPressDo { motorSonoro.switchBGM() }
 	
 	//Eleccion por defecto, TODO actualizar al mover de cuarto
 	jugador.elegirPuerta(puertaIzquierda)
