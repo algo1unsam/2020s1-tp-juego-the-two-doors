@@ -23,14 +23,14 @@ program game {
 	keyboard.right().onPressDo { jugador.elegirPuerta(puertaDerecha) }
 	keyboard.enter().onPressDo { jugador.abrirPuerta() }
 	
-	//comandos debug de sonido
-	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }
-	keyboard.z().onPressDo { motorSonoro.switchBGM() }
+	keyboard.m().onPressDo { motorSonoro.switchBGM() }			//Tecla mute, no borrar
+	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }		//comandos debug de sonido
 	
 	//Eleccion por defecto, TODO actualizar al mover de cuarto
 	jugador.elegirPuerta(puertaIzquierda)
 		
 	game.addVisualIn(fondoGrafico, game.at(0,0))
 	game.addVisual(jugador)
+	game.schedule(500, { motorSonoro.reproducirBGM() })
 	game.start()
 }

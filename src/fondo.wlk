@@ -33,6 +33,7 @@ object motorSonoro {
 	
 	override method initialize() {
 		[
+			["jail_door", "jail_cell_door.mp3"],
 			["tiger", "snd_tiger.ogg"],
 			["explosion", "snd_explosion.ogg"]
 		].forEach({ elem => sonidosDisponibles.put(elem.get(0).toString(), elem.get(1)) })
