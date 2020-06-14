@@ -8,3 +8,6 @@ class Puerta {
 		fondoGrafico.cambiarFondo(accion)
 	}
 }
+class Cuarto {
+	
+}
