@@ -33,7 +33,7 @@ class FondoGrafico {
 }
 
 class FadeVisual inherits FondoGrafico {
-	
+	const bottomFade = 20
 	override method initialize() {
 		self.agregarFondo("0", "black.png")
 		["20","40","60","80","100"].forEach{num => self.agregarFondo(num, "fade/fade" + num + ".png")}
@@ -50,7 +50,6 @@ class FadeVisual inherits FondoGrafico {
 	method fade(fadeType) {
 		var i = 5
 		game.onTick(100, fadeType + "_" + self.identity(), {
-			const bottomFade = 20
 			var fadeNum = i * 20
 			if (fadeType == "fadeIn") fadeNum = 100 - fadeNum
 			fadeNum = fadeNum.max(bottomFade).toString()
@@ -59,6 +58,24 @@ class FadeVisual inherits FondoGrafico {
 			if (i < 0) game.removeTickEvent(fadeType + "_" + self.identity())
 		})
 	}
+}
+
+class MensajeCuarto inherits FondoGrafico {
+	const cuarto
+	const nombre
+	const cuadros
+	var cuadroActual = 1
+	override method initialize() {
+		(1..cuadros).forEach{num => self.agregarFondo(nombre + num.toString(), "rooms/" + cuarto + "/" + nombre + " 0" + num + ".png")}
+		fondoActual = nombre + cuadroActual
+	}
+	method avanzar(){
+		if (self.finDeCuarto())
+			self.error("Ya no quedan cuadros!")
+		cuadroActual += 1
+		self.cambiarFondo(nombre + cuadroActual.toString())
+	}
+	method finDeCuarto() = (cuadroActual == cuadros)
 }
 
 object motorSonoro {
