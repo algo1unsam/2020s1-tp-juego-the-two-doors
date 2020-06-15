@@ -26,12 +26,14 @@ program game {
 	
 	keyboard.m().onPressDo { motorSonoro.switchBGM() }			//Tecla mute, no borrar
 	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }		//comandos debug de sonido
+	keyboard.f().onPressDo { fader.fadeSwitch() }		//comandos debug de fade
 	
 	//Eleccion por defecto, TODO actualizar al mover de cuarto
 	jugador.elegirPuerta(puertaIzquierda)
 		
 	game.addVisualIn(fondoCuarto, game.at(0,0))
 	game.addVisual(jugador)
+	game.addVisualIn(fader, game.at(0,0))
 	game.schedule(500, { motorSonoro.reproducirBGM() })
 	game.start()
 }

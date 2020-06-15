@@ -7,3 +7,5 @@ const fondoCuarto = new FondoGrafico(
 		["derecha", "derecha_abierta.png"]
 	]
 )
+
+const fader = new FadeVisual()

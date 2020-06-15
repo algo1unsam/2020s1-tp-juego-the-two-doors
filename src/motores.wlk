@@ -32,6 +32,35 @@ class FondoGrafico {
 	
 }
 
+class FadeVisual inherits FondoGrafico {
+	
+	override method initialize() {
+		self.agregarFondo("0", "black.png")
+		["20","40","60","80","100"].forEach{num => self.agregarFondo(num, "fade/fade" + num + ".png")}
+		fondoDefault = "100"
+		super()
+	}
+	
+	method isFaded() = (fondoActual != "100")
+	
+	method fadeSwitch() { if (self.isFaded()) self.fadeIn() else self.fadeOut()	}
+	method fadeIn() { self.fade("fadeIn") }
+	method fadeOut() { self.fade("fadeOut") }
+	
+	method fade(fadeType) {
+		var i = 5
+		game.onTick(100, fadeType + "_" + self.identity(), {
+			const bottomFade = 20
+			var fadeNum = i * 20
+			if (fadeType == "fadeIn") fadeNum = 100 - fadeNum
+			fadeNum = fadeNum.max(bottomFade).toString()
+			self.cambiarFondo(fadeNum)
+			i -= 1
+			if (i < 0) game.removeTickEvent(fadeType + "_" + self.identity())
+		})
+	}
+}
+
 object motorSonoro {
 	const sonidoDeFondo = game.sound("sounds/dungeon_ambient_1.ogg")
 	const sonidosDisponibles = new Dictionary()
