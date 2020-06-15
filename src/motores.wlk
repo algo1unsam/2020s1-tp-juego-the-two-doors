@@ -1,20 +1,28 @@
 import wollok.game.*
 
-object fondoGrafico {
+class FondoGrafico {
 	const fondosDisponibles = new Dictionary()
+	var fondoActual = "none"
+	var fondoDefault = "none"
+	const fondos = [] //Usada puramente en inicializacion, luego se vacía.
 	
-	var property fondoActual = "default"
-	method image() =  fondosDisponibles.get(fondoActual)
-	override method initialize() {
-		[
-			["default", "back.png"],
-			["izquierda", "izquierda_abierta.png"],
-			["derecha", "derecha_abierta.png"],
-			["none", "negro.png"]
-		].forEach({ elem => fondosDisponibles.put(elem.get(0).toString(), elem.get(1)) })
+	override method initialize() {	
+		fondosDisponibles.put("none", "fade/fade100.png")
+		fondos.forEach({ elem => self.agregarFondo(elem.get(0).toString(), elem.get(1)) })
+		fondos.removeAll(fondos)
+		
+		if (fondosDisponibles.keys().contains("default"))
+			fondoDefault = "default"
+		fondoActual = fondoDefault
 	}
 	
-	method fondoDefault() = fondosDisponibles.get("default")
+	method agregarFondo(key, valor) { fondosDisponibles.put(key, valor) }
+	
+	method image() =  fondosDisponibles.get(fondoActual)
+	
+	method fondosDisponibles() = fondosDisponibles.keys()
+	method fondoDefault() = fondosDisponibles.getOrElse("default", fondosDisponibles.get("none") )
+	
 	method cambiarFondo(nombre){
 		if (fondosDisponibles.keys().contains(nombre))
 			fondoActual = nombre
@@ -25,7 +33,7 @@ object fondoGrafico {
 }
 
 object motorSonoro {
-	const sonidoDeFondo = game.sound("dungeon_ambient_1.ogg")
+	const sonidoDeFondo = game.sound("sounds/dungeon_ambient_1.ogg")
 	const sonidosDisponibles = new Dictionary()
 	var sdfMuteado = true // Debug, probando sin usar [...].volume()
 	
@@ -44,7 +52,7 @@ object motorSonoro {
 	
 	method playSound(nombre) {
 		if (sonidosDisponibles.keys().contains(nombre)) {			
-			game.sound(sonidosDisponibles.get(nombre)).play()
+			game.sound("sounds/" + sonidosDisponibles.get(nombre)).play()
 		}
 	}
 	
@@ -56,7 +64,6 @@ object motorSonoro {
 		sdfMuteado = not(sdfMuteado)
 	}
 	method reproducirBGM() {
-		console.println("holi")
 		sonidoDeFondo.play()
 	}
 	

@@ -1,6 +1,7 @@
 import wollok.game.*
 import jugador.*
-import fondo.*
+import fondos.*
+import motores.motorSonoro
 import puertas.*
 
 program game {
@@ -29,7 +30,7 @@ program game {
 	//Eleccion por defecto, TODO actualizar al mover de cuarto
 	jugador.elegirPuerta(puertaIzquierda)
 		
-	game.addVisualIn(fondoGrafico, game.at(0,0))
+	game.addVisualIn(fondoCuarto, game.at(0,0))
 	game.addVisual(jugador)
 	game.schedule(500, { motorSonoro.reproducirBGM() })
 	game.start()
