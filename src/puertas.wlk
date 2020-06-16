@@ -7,7 +7,6 @@ const ubicacionDerecha = game.at(22,6)
 
 class Puerta {
 	var property position
-	var property accion = "default"
 	method accion() {
 		if (position == ubicacionIzquierda) return "izquierda"
 		else if (position == ubicacionDerecha) return "derecha"
