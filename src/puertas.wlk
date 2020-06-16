@@ -1,6 +1,7 @@
 import wollok.game.*
 import motores.motorSonoro
 import fondos.*
+import jugador.*
 
 const ubicacionIzquierda = game.at(9,6)
 const ubicacionDerecha = game.at(22,6)
@@ -13,8 +14,17 @@ class Puerta {
 		else throw new Exception(message = "Necesito que me ubiquen para accionar!")
 	}
 	method abrir() {
-		motorSonoro.playSound("jail_door")
 		fondoCuarto.cambiarFondo(self.accion())
+		motorSonoro.playSound("jail_door")
+		game.schedule(500, {
+			jugador.switchCutscene()
+			fader.fadeOut()
+			game.schedule(1000, {
+				/*game.addVisualIn(fondoCuarto, game.at(0,0))*/
+				fader.fadeIn()
+				jugador.switchCutscene()
+			})
+		})
 	}
 }
 
@@ -48,6 +58,4 @@ object mapa {
 	method ruta(cuarto, opcion) = opciones.get(cuarto).get(opcion).get(1)
 	method rutaIzquierda(cuarto) = self.ruta(cuarto, 0)
 	method rutaDerecha(cuarto) = self.ruta(cuarto, 1)
-	
-	
 }
