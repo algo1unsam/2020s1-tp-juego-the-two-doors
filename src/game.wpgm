@@ -12,12 +12,10 @@ program game {
 	game.boardGround("black.png")
 	
 	const puertaIzquierda = new Puerta(
-		position=game.at(9,6),
-		accion="izquierda"
+		position = ubicacionIzquierda
 	)
 	const puertaDerecha = new Puerta(
-		position=game.at(22,6),
-		accion="derecha"
+		position = ubicacionDerecha
 	)
 	
 	keyboard.left().onPressDo { jugador.elegirPuerta(puertaIzquierda) }
