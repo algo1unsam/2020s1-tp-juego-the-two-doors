@@ -10,8 +10,6 @@ class Puerta {
 	}
 }
 
-class Cuarto {
-	
 
 object mapa {
 	const opciones = new Dictionary()
@@ -30,4 +28,7 @@ object mapa {
 	}
 	
 	method opciones(cuarto) = opciones.get(cuarto)
+	method ruta(cuarto, opcion) = opciones.get(cuarto).get(opcion).get(1)
+	method rutaIzquierda(cuarto) = self.ruta(cuarto, 0)
+	method rutaDerecha(cuarto) = self.ruta(cuarto, 1)
 }
