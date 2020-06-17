@@ -11,23 +11,20 @@ program game {
 	game.width(32)
 	game.boardGround("black.png")
 	
-	const puertaIzquierda = new Puerta(
-		position = ubicacionIzquierda
-	)
-	const puertaDerecha = new Puerta(
-		position = ubicacionDerecha
+	const cuartoInicial = new Cuarto(
+		idCuarto = "a1"
 	)
 	
-	keyboard.left().onPressDo { jugador.elegirPuerta(puertaIzquierda) }
-	keyboard.right().onPressDo { jugador.elegirPuerta(puertaDerecha) }
-	keyboard.enter().onPressDo { jugador.abrirPuerta() }
+	keyboard.left().onPressDo { jugador.elegirPuerta(cuartoInicial.puertaIzquierda()) }
+	keyboard.right().onPressDo { jugador.elegirPuerta(cuartoInicial.puertaDerecha()) }
+	keyboard.enter().onPressDo { jugador.usarPuerta() }
 	
 	keyboard.m().onPressDo { motorSonoro.switchBGM() }			//Tecla mute, no borrar
 	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }		//comandos debug de sonido
 	keyboard.f().onPressDo { fader.fadeSwitch() }		//comandos debug de fade
 	
 	//Eleccion por defecto, TODO actualizar al mover de cuarto
-	jugador.elegirPuerta(puertaIzquierda)
+	jugador.elegirPuerta(cuartoInicial.puertaIzquierda())
 		
 	game.addVisualIn(fondoCuarto, game.at(0,0))
 	game.addVisual(jugador)

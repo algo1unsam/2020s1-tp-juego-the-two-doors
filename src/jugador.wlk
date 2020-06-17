@@ -3,7 +3,9 @@ import wollok.game.*
 object jugador {
 	var property position 
 	var puerta = null
+	//var cuarto = cuartoInicial
 	var enCutscene = false
+	method enCutscene() = enCutscene
 
 	method image() = if (enCutscene) "invisible.png" else "you.png"
 	
@@ -16,10 +18,6 @@ object jugador {
 		}
 	}
 	
-	method abrirPuerta() {
-		if (!enCutscene && puerta != null){
-			puerta.abrir()
-		}
-	}
+	method usarPuerta() { puerta.usar()	}
 }
 

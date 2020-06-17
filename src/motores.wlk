@@ -67,7 +67,9 @@ class MensajeCuarto inherits FondoGrafico {
 	var cuadroActual = 1
 	override method initialize() {
 		(1..cuadros).forEach{num => self.agregarFondo(nombre + num.toString(), "rooms/" + cuarto + "/" + nombre + " 0" + num + ".png")}
-		fondoActual = nombre + cuadroActual
+		fondoActual = nombre + cuadroActual.toString()
+		console.println(fondoActual)
+		console.println(fondosDisponibles.get(fondoActual))
 	}
 	method avanzar(){
 		if (self.finDeCuarto())
