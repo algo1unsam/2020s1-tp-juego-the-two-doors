@@ -3,14 +3,21 @@ import wollok.game.*
 object jugador {
 	var property position
 	 
+	var gameOver = false 
 	var enCutscene = false
 	var cuarto = null
 	var puertaElegida = null
 
 	method image() = if (enCutscene) "invisible.png" else "you.png"
+	method image() = if (self.enIntro() or self.enCutscene()) "invisible.png" else "you.png"
+	
+	method esGameOver() = gameOver
+	method toggleGameOver() { gameOver = not(gameOver) }
 	
 	method enCutscene() = enCutscene
 	method switchCutscene() { enCutscene = not(enCutscene) }
+	
+	method enIntro() = (cuarto.idCuarto() == "_intro")
 	
 	method cambiarCuarto(nuevoCuarto) {
 		cuarto = nuevoCuarto

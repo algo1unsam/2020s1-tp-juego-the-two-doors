@@ -12,12 +12,24 @@ program game {
 	game.boardGround("black.png")
 	
 	const cuartoInicial = new Cuarto(
-		idCuarto = "a1"
+		idCuarto = "_intro"
 	)
+	
 	
 	keyboard.left().onPressDo { jugador.elegirPuertaIzquierda() }
 	keyboard.right().onPressDo { jugador.elegirPuertaDerecha() }
-	keyboard.enter().onPressDo { jugador.usarPuerta() }
+	keyboard.enter().onPressDo { 
+		if (jugador.esGameOver()) {
+			jugador.toggleGameOver()
+			jugador.cambiarCuarto(cuartoInicial)
+			fader.fade("off")
+			motorSonoro.switchBGM()
+			jugador.switchCutscene()
+		} else {
+			jugador.usarPuerta()
+		}
+	}
+	keyboard.backspace().onPressDo{ if (jugador.esGameOver()) game.stop() }
 	
 	keyboard.m().onPressDo { motorSonoro.switchBGM() }			//Tecla mute, no borrar
 	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }		//comandos debug de sonido

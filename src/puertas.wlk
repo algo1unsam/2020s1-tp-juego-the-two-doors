@@ -10,15 +10,16 @@ const ubicacionDerecha = game.at(22,6)
 object mapa {
 	const opciones = new Dictionary()
 	override method initialize() {
-		[
-			[  "a1", [	["afilado", "b1", "cuchillo", 4],		["?", "b2", "llave", 4]			]  ],
-			[  "b1", [	["?", "c1", "tigre", 4],				["muerte", "c2", "muerte", 4]	]  ],
-			[  "b2", [	["?", "game_over", "duda", 4],			["banana", "c4", "banana", 4]	]  ],
-			[  "c1", [	["acariciar", "bad_end", "bad", 3],		["?", "good_end", "good", 2]	]  ],
-			[  "c2", [	["cuchillo", "bad_end", "bad", 2],		["?", "good_end", "good", 2]	]  ],
-			[  "c4", [	["tarantino", "d1", "maletin", 4],		["?", "d2", "puerta", 4]		]  ],
-			[  "d1", [	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]  ],
-			[  "d2", [	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]  ]
+		[	
+			[  "_intro",	[	["ingresar", "a1", "intro", 3],			["ingresar", "a1", "intro", 3]	]	  ],
+			[  "a1",		[	["afilado", "b1", "cuchillo", 4],		["?", "b2", "llave", 4]			]	  ],
+			[  "b1",		[	["?", "c1", "tigre", 4],				["muerte", "c2", "muerte", 4]	]	  ],
+			[  "b2",		[	["?", "game_over", "duda", 4],			["banana", "c4", "banana", 4]	]	  ],
+			[  "c1",		[	["acariciar", "bad_end", "bad", 3],		["?", "good_end", "good", 2]	]	  ],
+			[  "c2",		[	["cuchillo", "bad_end", "bad", 2],		["?", "good_end", "good", 2]	]	  ],
+			[  "c4",		[	["tarantino", "d1", "maletin", 4],		["?", "d2", "puerta", 4]		]	  ],
+			[  "d1",		[	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]	  ],
+			[  "d2",		[	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]	  ]
 		].forEach({ elem => opciones.put(elem.get(0).toString(), elem.get(1)) })
 		
 		/*[ "a1", "b1", "b2", "c1", "c2", "c4", "d1", "d2"].forEach{
@@ -50,7 +51,7 @@ class Cuarto {
 	method ingresar() {
 		if (fondoCuarto.existeFondo(idCuarto)){			
 			fondoCuarto.cambiarFondo(idCuarto)
-			[puertaIzquierda, puertaDerecha].forEach{ pue => pue.noEsPuerta() }
+			if (idCuarto != "_intro") [puertaIzquierda, puertaDerecha].forEach{ pue => pue.noEsPuerta() }
 		} else {
 			fondoCuarto.usarFondoDefault()
 		}
@@ -61,12 +62,12 @@ class Puerta {
 	var property position
 	var propioCuarto
 	var property idPuerta
-	var datosSigCuarto = []
 	var mensajeCuarto = null
 	var property enTransicion = false
 	var property esPuerta = true
 	method noEsPuerta() { esPuerta = false }
 	method accion() {
+		if (propioCuarto.idCuarto() == "_intro") return "_intro2"
 		if (position == ubicacionIzquierda) return "izquierda"
 		else if (position == ubicacionDerecha) return "derecha"
 		else throw new Exception(message = "Necesito que me ubiquen para accionar!")
@@ -80,15 +81,16 @@ class Puerta {
 	}
 	method abrir() {
 		enTransicion = true
-		if (esPuerta) {			
+		if (esPuerta) {
 			fondoCuarto.cambiarFondo(self.accion())
 			motorSonoro.playSound("jail_door")
 		}
 		game.schedule(500, {
 			jugador.switchCutscene()
 			if (esPuerta) fader.fadeOut()
+			if (["good_end", "bad_end"].contains(mapa.ruta(propioCuarto.idCuarto(), idPuerta)))
+				motorSonoro.switchBGM()
 			game.schedule(1000, {
-				datosSigCuarto = mapa.ruta(propioCuarto.idCuarto(), idPuerta)
 				mensajeCuarto = new MensajeCuarto(
 					cuarto = propioCuarto.idCuarto(),
 					nombre = mapa.nombreMensaje(propioCuarto.idCuarto(), idPuerta),
@@ -114,9 +116,12 @@ class Puerta {
 		if (mensajeCuarto.finDeCuarto()) {
 			enTransicion = true
 			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idPuerta)
-			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto))
-				self.error("GAME OVER:" + idSiguienteCuarto)
-			else {			
+			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
+				jugador.toggleGameOver()
+				fondoCuarto.cambiarFondo("game_over")
+				game.removeVisual(mensajeCuarto)
+				fader.fade("off")
+			} else {			
 				const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
 				siguienteCuarto.puertaIzquierda().enTransicion(true)
 				jugador.cambiarCuarto(siguienteCuarto)
@@ -125,7 +130,7 @@ class Puerta {
 					fader.fade("off")
 				else
 					fader.fadeIn()
-				game.schedule(1000, {	
+				game.schedule(1000, {
 					jugador.switchCutscene()
 					enTransicion = false
 					siguienteCuarto.puertaIzquierda().enTransicion(false)

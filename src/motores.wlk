@@ -6,8 +6,10 @@ class FondoGrafico {
 	var fondoDefault = "none"
 	const fondos = [] //Usada puramente en inicializacion, luego se vacía.
 	
+	method image() =  fondosDisponibles.get(fondoActual)
+	
 	override method initialize() {	
-		fondosDisponibles.put("none", "fade/fade100.png")
+		self.agregarFondo("none", "fade/fade100.png")
 		fondos.forEach({ elem => self.agregarFondo(elem.get(0).toString(), elem.get(1)) })
 		fondos.removeAll(fondos)
 		
@@ -30,9 +32,6 @@ class FondoGrafico {
 		self.validarFondo(nombre)
 		fondosDisponibles.get(nombre)
 	}
-	
-	method image() =  fondosDisponibles.get(fondoActual)
-	
 	
 	method cambiarFondo(nombre){
 		self.validarFondo(nombre)
@@ -99,7 +98,7 @@ class MensajeCuarto inherits FondoGrafico {
 object motorSonoro {
 	const sonidoDeFondo = game.sound("sounds/dungeon_ambient_1.ogg")
 	const sonidosDisponibles = new Dictionary()
-	var sdfMuteado = true // Debug, probando sin usar [...].volume()
+	var sdfMuteado = false // Debug, probando sin usar [...].volume()
 	
 	method sonidoDeFondo() = sonidoDeFondo
 	
@@ -111,7 +110,6 @@ object motorSonoro {
 		].forEach({ elem => sonidosDisponibles.put(elem.get(0).toString(), elem.get(1)) })
 		
 		sonidoDeFondo.shouldLoop(true)
-		sonidoDeFondo.volume(0)
 	}
 	
 	method playSound(nombre) {
