@@ -5,10 +5,10 @@ const fondoCuarto = new FondoGrafico(
 		["default", "back.png"],
 		["izquierda", "izquierda_abierta.png"],
 		["derecha", "derecha_abierta.png"],
-		["c1", "rooms/c0/_choice.png"],
-		["c2", "rooms/c0/_choice.png"],
-		["d1", "rooms/c0/_choice.png"],
-		["d2", "rooms/c0/_choice.png"]
+		["c1", "rooms/c1/_choice.png"],
+		["c2", "rooms/c2/_choice.png"],
+		["d1", "rooms/d1/_choice.png"],
+		["d2", "rooms/d2/_choice.png"]
 	]
 )
 

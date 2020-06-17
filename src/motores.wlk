@@ -11,29 +11,39 @@ class FondoGrafico {
 		fondos.forEach({ elem => self.agregarFondo(elem.get(0).toString(), elem.get(1)) })
 		fondos.removeAll(fondos)
 		
-		if (fondosDisponibles.keys().contains("default"))
+		if (self.existeFondo("default"))
 			fondoDefault = "default"
-		fondoActual = fondoDefault
+		self.usarFondoDefault()
 	}
 	
+	method fondosDisponibles() = fondosDisponibles.keys()
 	method agregarFondo(key, valor) { fondosDisponibles.put(key, valor) }
+	
+	method usarFondoDefault() { fondoActual = fondoDefault }
+	
+	method existeFondo(nombre) = fondosDisponibles.keys().contains(nombre)
+	method validarFondo(nombre) {
+		if ( not self.existeFondo(nombre))
+			self.error("No existe el fondo indicado:" + nombre)
+	}
+	method obtenerFondo(nombre) = {
+		self.validarFondo(nombre)
+		fondosDisponibles.get(nombre)
+	}
 	
 	method image() =  fondosDisponibles.get(fondoActual)
 	
-	method fondosDisponibles() = fondosDisponibles.keys()
-	method fondoDefault() = fondosDisponibles.getOrElse("default", fondosDisponibles.get("none") )
 	
 	method cambiarFondo(nombre){
-		if (fondosDisponibles.keys().contains(nombre))
-			fondoActual = nombre
-		else
-			throw new MessageNotUnderstoodException()
+		self.validarFondo(nombre)
+		fondoActual = nombre
 	}
 	
 }
 
 class FadeVisual inherits FondoGrafico {
 	const bottomFade = 20
+	const topFade = 100
 	override method initialize() {
 		self.agregarFondo("0", "black.png")
 		["20","40","60","80","100"].forEach{num => self.agregarFondo(num, "fade/fade" + num + ".png")}
@@ -48,21 +58,27 @@ class FadeVisual inherits FondoGrafico {
 	method fadeOut() { self.fade("fadeOut") }
 	
 	method fade(fadeType) {
-		var i = 5
-		game.onTick(100, fadeType + "_" + self.identity(), {
-			var fadeNum = i * 20
-			if (fadeType == "fadeIn") fadeNum = 100 - fadeNum
-			fadeNum = fadeNum.max(bottomFade).toString()
-			self.cambiarFondo(fadeNum)
-			i -= 1
-			if (i < 0) game.removeTickEvent(fadeType + "_" + self.identity())
-		})
+		if (fadeType == "off") {
+			self.cambiarFondo(topFade.toString())
+		} else if (fadeType == "on") {
+			self.cambiarFondo(bottomFade.toString())
+		} else {			
+			var i = 5
+			game.onTick(100, fadeType + "_" + self.identity(), {
+				var fadeNum = i * 20
+				if (fadeType == "fadeIn") fadeNum = 100 - fadeNum
+				fadeNum = fadeNum.max(bottomFade).toString()
+				self.cambiarFondo(fadeNum)
+				i -= 1
+				if (i < 0) game.removeTickEvent(fadeType + "_" + self.identity())
+			})
+		}
 	}
 }
 
 class MensajeCuarto inherits FondoGrafico {
-	const cuarto
-	const nombre
+	const property cuarto
+	const property nombre
 	const cuadros
 	var cuadroActual = 1
 	override method initialize() {

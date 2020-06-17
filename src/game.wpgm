@@ -15,16 +15,15 @@ program game {
 		idCuarto = "a1"
 	)
 	
-	keyboard.left().onPressDo { jugador.elegirPuerta(cuartoInicial.puertaIzquierda()) }
-	keyboard.right().onPressDo { jugador.elegirPuerta(cuartoInicial.puertaDerecha()) }
+	keyboard.left().onPressDo { jugador.elegirPuertaIzquierda() }
+	keyboard.right().onPressDo { jugador.elegirPuertaDerecha() }
 	keyboard.enter().onPressDo { jugador.usarPuerta() }
 	
 	keyboard.m().onPressDo { motorSonoro.switchBGM() }			//Tecla mute, no borrar
 	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }		//comandos debug de sonido
 	keyboard.f().onPressDo { fader.fadeSwitch() }		//comandos debug de fade
 	
-	//Eleccion por defecto, TODO actualizar al mover de cuarto
-	jugador.elegirPuerta(cuartoInicial.puertaIzquierda())
+	jugador.cambiarCuarto(cuartoInicial)
 		
 	game.addVisualIn(fondoCuarto, game.at(0,0))
 	game.addVisual(jugador)
