@@ -65,7 +65,7 @@ class Cuarto {
 		propioCuarto = self,
 		idPuerta = 1
 	)
-	
+
 	override method initialize() {
 	}
 }
@@ -90,6 +90,7 @@ object mapa {
 		}*/
 	}
 	
+
 	method opciones(cuarto) = opciones.get(cuarto).map{ opcion => opcion.get(0) }
 	method ruta(cuarto, opcion) = opciones.get(cuarto).get(opcion).get(1)
 	method nombreMensaje(cuarto, opcion) = opciones.get(cuarto).get(opcion).get(2)
