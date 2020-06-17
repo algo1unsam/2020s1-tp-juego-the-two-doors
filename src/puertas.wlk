@@ -87,9 +87,10 @@ class Puerta {
 		}
 		game.schedule(500, {
 			jugador.switchCutscene()
+			fondoOpciones.cambiarFondo("none")
 			if (esPuerta) fader.fadeOut()
 			if (["good_end", "bad_end"].contains(mapa.ruta(propioCuarto.idCuarto(), idPuerta)))
-				motorSonoro.switchBGM()
+				motorSonoro.turnBGM(false)
 			game.schedule(1000, {
 				mensajeCuarto = new MensajeCuarto(
 					cuarto = propioCuarto.idCuarto(),
@@ -119,20 +120,22 @@ class Puerta {
 			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
 				jugador.toggleGameOver()
 				fondoCuarto.cambiarFondo("game_over")
-				fondoOpciones.cambiarFondo("none")
+				fondoOpciones.reemplazarFondos("none")
 				game.removeVisual(mensajeCuarto)
 				fader.fade("off")
 			} else {			
 				const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
 				siguienteCuarto.puertaIzquierda().enTransicion(true)
+				fondoOpciones.reemplazarFondos(idSiguienteCuarto)
 				jugador.cambiarCuarto(siguienteCuarto)
+				fondoOpciones.cambiarFondo("none")
 				game.removeVisual(mensajeCuarto)
 				if (fondoCuarto.existeFondo(idSiguienteCuarto))
 					fader.fade("off")
 				else
 					fader.fadeIn()
 				game.schedule(1000, {
-					fondoOpciones.reemplazarFondos(idSiguienteCuarto)
+					fondoOpciones.cambiarFondo("izquierda")
 					jugador.switchCutscene()
 					enTransicion = false
 					siguienteCuarto.puertaIzquierda().enTransicion(false)

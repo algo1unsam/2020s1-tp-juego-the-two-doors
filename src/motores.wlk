@@ -42,18 +42,19 @@ class FondoGrafico {
 	
 	method cambiarFondoSiExiste(nombre) { if (self.existeFondo(nombre)) self.cambiarFondo(nombre)}
 	
-	method removerTodosLosFondos(){
-		fondoDefault = "none"
-		fondosDisponibles.keys().forEach{ key => if (key != "none") fondosDisponibles.remove(key) }
-	}
-	
 	method reemplazarFondos(idCuarto) {
-		self.cambiarFondo("none")
-		self.removerTodosLosFondos()
+		fondoDefault = "none"
+		self.usarFondoDefault()
 		["izquierda", "derecha"].forEach{
-			dir => self.agregarFondo(dir, "rooms/" + idCuarto.toString() + "/opcion_" + dir + ".png")
+			dir =>
+			const ruta = (
+				if (idCuarto == "none") 
+					"fade/fade100.png"
+				else
+					"rooms/" + idCuarto.toString() + "/opcion_" + dir + ".png"
+			)
+			self.agregarFondo(dir, ruta)
 		}
-		self.cambiarFondo("izquierda")
 	}
 	
 }
@@ -136,6 +137,10 @@ object motorSonoro {
 		}
 	}
 	
+	method turnBGM(encender){
+		sonidoDeFondo.volume(if (encender) 1 else 0)
+		sdfMuteado = encender
+	}
 	method switchBGM() {
 		if (sdfMuteado)
 			sonidoDeFondo.volume(1)

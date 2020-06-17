@@ -23,7 +23,7 @@ program game {
 			jugador.toggleGameOver()
 			jugador.cambiarCuarto(cuartoInicial)
 			fader.fade("off")
-			motorSonoro.switchBGM()
+			motorSonoro.turnBGM(true)
 			jugador.switchCutscene()
 		} else {
 			jugador.usarPuerta()
