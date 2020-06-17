@@ -28,14 +28,32 @@ class FondoGrafico {
 		if ( not self.existeFondo(nombre))
 			self.error("No existe el fondo indicado:" + nombre)
 	}
-	method obtenerFondo(nombre) = {
-		self.validarFondo(nombre)
-		fondosDisponibles.get(nombre)
+	method obtenerFondo(nombre) {
+		if (self.existeFondo(nombre))
+			return fondosDisponibles.get(nombre)
+		else
+			return "No existe este fondo"
 	}
 	
 	method cambiarFondo(nombre){
 		self.validarFondo(nombre)
 		fondoActual = nombre
+	}
+	
+	method cambiarFondoSiExiste(nombre) { if (self.existeFondo(nombre)) self.cambiarFondo(nombre)}
+	
+	method removerTodosLosFondos(){
+		fondoDefault = "none"
+		fondosDisponibles.keys().forEach{ key => if (key != "none") fondosDisponibles.remove(key) }
+	}
+	
+	method reemplazarFondos(idCuarto) {
+		self.cambiarFondo("none")
+		self.removerTodosLosFondos()
+		["izquierda", "derecha"].forEach{
+			dir => self.agregarFondo(dir, "rooms/" + idCuarto.toString() + "/opcion_" + dir + ".png")
+		}
+		self.cambiarFondo("izquierda")
 	}
 	
 }

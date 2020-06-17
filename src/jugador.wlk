@@ -1,4 +1,5 @@
 import wollok.game.*
+import fondos.fondoOpciones
 
 object jugador {
 	var property position
@@ -8,7 +9,6 @@ object jugador {
 	var cuarto = null
 	var puertaElegida = null
 
-	method image() = if (enCutscene) "invisible.png" else "you.png"
 	method image() = if (self.enIntro() or self.enCutscene()) "invisible.png" else "you.png"
 	
 	method esGameOver() = gameOver
@@ -30,10 +30,14 @@ object jugador {
 	method elegirPuertaIzquierda() { 
 		puertaElegida = cuarto.puertaIzquierda()
 		self.moverBajoPuerta()
+		fondoOpciones.cambiarFondoSiExiste("izquierda")
+		console.println(fondoOpciones.obtenerFondo("izquierda"))
 	}
 	method elegirPuertaDerecha() {
 		puertaElegida = cuarto.puertaDerecha()
 		self.moverBajoPuerta()
+		fondoOpciones.cambiarFondoSiExiste("derecha")
+		console.println(fondoOpciones.obtenerFondo("derecha"))
 	}
 	
 	method usarPuerta() { puertaElegida.usar() }

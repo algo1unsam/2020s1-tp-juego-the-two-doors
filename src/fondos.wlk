@@ -15,4 +15,8 @@ const fondoCuarto = new FondoGrafico(
 	]
 )
 
+const fondoOpciones = new FondoGrafico(
+	fondos = []
+)
+
 const fader = new FadeVisual()

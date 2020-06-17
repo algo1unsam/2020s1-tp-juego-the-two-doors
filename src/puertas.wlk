@@ -119,6 +119,7 @@ class Puerta {
 			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
 				jugador.toggleGameOver()
 				fondoCuarto.cambiarFondo("game_over")
+				fondoOpciones.cambiarFondo("none")
 				game.removeVisual(mensajeCuarto)
 				fader.fade("off")
 			} else {			
@@ -131,6 +132,7 @@ class Puerta {
 				else
 					fader.fadeIn()
 				game.schedule(1000, {
+					fondoOpciones.reemplazarFondos(idSiguienteCuarto)
 					jugador.switchCutscene()
 					enTransicion = false
 					siguienteCuarto.puertaIzquierda().enTransicion(false)

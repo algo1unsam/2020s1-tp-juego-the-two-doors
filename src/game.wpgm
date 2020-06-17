@@ -39,6 +39,7 @@ program game {
 		
 	game.addVisualIn(fondoCuarto, game.at(0,0))
 	game.addVisual(jugador)
+	game.addVisualIn(fondoOpciones, game.at(0,0))
 	game.addVisualIn(fader, game.at(0,0))
 	game.schedule(500, { motorSonoro.reproducirBGM() })
 	game.start()
