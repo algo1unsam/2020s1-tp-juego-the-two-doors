@@ -84,12 +84,12 @@ class Puerta {
 	}
 	method abrir() {
 		enTransicion = true
+		jugador.switchCutscene()
 		if (esPuerta) {
 			fondoCuarto.cambiarFondo(self.accion())
 			motorSonoro.playSound("jail_door")
 		}
 		game.schedule(500, {
-			jugador.switchCutscene()
 			fondoOpciones.cambiarFondo("none")
 			if (esPuerta) {
 				motorSonoro.playSound("footsteps")
@@ -102,17 +102,19 @@ class Puerta {
 				nombre = mapa.nombreMensaje(propioCuarto.idCuarto(), idPuerta),
 				cuadros = mapa.cuadrosMensaje(propioCuarto.idCuarto(), idPuerta)
 			)
-			const tigreEnojado = propioCuarto.idCuarto() == "c1" and mensajeCuarto.nombre() == "bad"
-			var espera1 = 3500
+			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idPuerta)
+			const escenaFinal = ["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)
+			var espera1 = 3000
 			if (propioCuarto.idCuarto() == "_intro")
-				espera1 -= 1000
-			if (tigreEnojado)
-				espera1 -= 2500
+				espera1 -= 500
+			if (escenaFinal)
+				espera1 -= 2000
 			game.schedule(espera1, {
 				var espera2 = 500
 				const fader2 = new FadeVisual()
 				//Casos particulares
 				game.addVisual(mensajeCuarto)
+				const tigreEnojado = propioCuarto.idCuarto() == "c1" and mensajeCuarto.nombre() == "bad"
 				if (tigreEnojado) {
 					motorSonoro.playSound("tiger")
 					console.println("test")
@@ -120,7 +122,7 @@ class Puerta {
 					game.schedule(espera2, {
 						self.prepararSigCuarto()
 					})
-				} else /* Caso default */ {
+				} else if ( not escenaFinal ) {
 					fader2.fade("on")
 					game.addVisual(fader2)
 					fader2.fadeIn()
@@ -138,11 +140,14 @@ class Puerta {
 			enTransicion = true
 			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idPuerta)
 			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
-				jugador.toggleGameOver()
+				mainFader.fade("on")
+				game.removeVisual(mensajeCuarto)
 				fondoCuarto.cambiarFondo("game_over")
 				fondoOpciones.reemplazarFondos("none")
-				game.removeVisual(mensajeCuarto)
-				mainFader.fade("off")
+				mainFader.fadeIn()
+				game.schedule(500, {					
+					jugador.toggleGameOver()
+				})
 			} else {			
 				const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
 				siguienteCuarto.puertaIzquierda().enTransicion(true)
