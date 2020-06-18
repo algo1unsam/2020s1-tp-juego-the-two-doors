@@ -57,6 +57,8 @@ class Cuarto {
 			fondoCuarto.usarFondoDefault()
 		}
 	}
+	
+	method sinPuertas() = ([puertaDerecha, puertaIzquierda].any{elem => not elem.esPuerta()})
 }
 
 class Puerta {

@@ -9,7 +9,7 @@ object jugador {
 	var cuarto = null
 	var puertaElegida = null
 
-	method image() = if (self.enIntro() or self.enCutscene()) "invisible.png" else "you.png"
+	method image() = if (self.enIntro() or self.enCutscene() or cuarto.sinPuertas()) "invisible.png" else "you.png"
 	
 	method esGameOver() = gameOver
 	method toggleGameOver() { gameOver = not(gameOver) }
