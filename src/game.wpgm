@@ -2,7 +2,7 @@ import wollok.game.*
 import jugador.*
 import fondos.*
 import motores.motorSonoro
-import puertas.*
+import cuartos.*
 
 program game {
 	game.title("Two Doors")
@@ -16,13 +16,13 @@ program game {
 	)
 	
 	
-	keyboard.left().onPressDo { if (!jugador.enCutscene()) {jugador.elegirPuertaIzquierda()} }
-	keyboard.right().onPressDo { if (!jugador.enCutscene()) {jugador.elegirPuertaDerecha()} }
+	keyboard.left().onPressDo { if (!jugador.enCutscene()) {jugador.elegirOpcionIzquierda()} }
+	keyboard.right().onPressDo { if (!jugador.enCutscene()) {jugador.elegirOpcionDerecha()} }
 	keyboard.enter().onPressDo { 
 		if (jugador.esGameOver()) {
 			jugador.empezarDeNuevo(cuartoInicial)
 		} else {
-			jugador.usarPuerta()
+			jugador.accionar()
 		}
 	}
 	keyboard.backspace().onPressDo{ if (jugador.esGameOver()) game.stop() }

@@ -1,7 +1,7 @@
 import wollok.game.*
 import fondos.*
 import motores.motorSonoro
-import puertas.*
+import cuartos.*
 
 object jugador {
 	var property position
@@ -9,7 +9,7 @@ object jugador {
 	var gameOver = false 
 	var enCutscene = false
 	var cuarto = null
-	var puertaElegida = null
+	var opcionElegida = null
 
 	method image() = if (self.enIntro() or self.enCutscene() or cuarto.sinPuertas()) "invisible.png" else "you.png"
 	
@@ -24,26 +24,26 @@ object jugador {
 	method cambiarCuarto(nuevoCuarto) {
 		cuarto = nuevoCuarto
 		cuarto.ingresar()
-		self.elegirPuertaIzquierda()
+		self.elegirOpcionIzquierda()
 	}
 
-	method moverBajoPuerta() { self.position(puertaElegida.position().down(2)) }
+	method moverBajoOpcion() { self.position(opcionElegida.position().down(2)) }
 	
-	method elegirPuertaIzquierda() { 
-		puertaElegida = cuarto.puertaIzquierda()
-		self.moverBajoPuerta()
+	method elegirOpcionIzquierda() { 
+		opcionElegida = cuarto.opcionIzquierda()
+		self.moverBajoOpcion()
 		fondoOpciones.cambiarFondoSiExiste("izquierda")
 		console.println(fondoOpciones.obtenerFondo("izquierda"))
 	}
-	method elegirPuertaDerecha() {		
-		puertaElegida = cuarto.puertaDerecha()
-		self.moverBajoPuerta()
+	method elegirOpcionDerecha() {		
+		opcionElegida = cuarto.opcionDerecha()
+		self.moverBajoOpcion()
 		fondoOpciones.cambiarFondoSiExiste("derecha")
 		console.println(fondoOpciones.obtenerFondo("derecha"))
 	}
 	
-	method usarPuerta() { 
-		puertaElegida.usar()
+	method accionar() { 
+		opcionElegida.usar()
 	}
 	
 	method empezarDeNuevo(cuartoInicial) {		
