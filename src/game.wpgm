@@ -20,11 +20,7 @@ program game {
 	keyboard.right().onPressDo { jugador.elegirPuertaDerecha() }
 	keyboard.enter().onPressDo { 
 		if (jugador.esGameOver()) {
-			jugador.toggleGameOver()
-			jugador.cambiarCuarto(cuartoInicial)
-			mainFader.fade("off")
-			motorSonoro.turnBGM(true)
-			jugador.switchCutscene()
+			jugador.empezarDeNuevo(cuartoInicial)
 		} else {
 			jugador.usarPuerta()
 		}

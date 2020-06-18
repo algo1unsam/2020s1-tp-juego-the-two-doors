@@ -1,5 +1,7 @@
 import wollok.game.*
-import fondos.fondoOpciones
+import fondos.*
+import motores.motorSonoro
+import puertas.*
 
 object jugador {
 	var property position
@@ -41,5 +43,13 @@ object jugador {
 	}
 	
 	method usarPuerta() { puertaElegida.usar() }
+	
+	method empezarDeNuevo(cuartoInicial) {		
+		self.toggleGameOver()
+		self.cambiarCuarto(cuartoInicial)
+		mainFader.fade("off")
+		motorSonoro.turnBGM(true)
+		self.switchCutscene()
+	}
 }
 
