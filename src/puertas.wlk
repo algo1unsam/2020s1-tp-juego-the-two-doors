@@ -17,7 +17,7 @@ object mapa {
 			[  "b1",		[	["?", "c1", "tigre", 4],				["muerte", "c2", "muerte", 4]	]	  ],
 			[  "b2",		[	["?", "game_over", "duda", 4],			["banana", "c4", "banana", 4]	]	  ],
 			[  "c1",		[	["acariciar", "bad_end", "bad", 3],		["?", "good_end", "good", 2]	]	  ],
-			[  "c2",		[	["cuchillo", "bad_end", "bad", 2],		["?", "good_end", "good", 2]	]	  ],
+			[  "c2",		[	["cuchillo", "good_end", "good", 2],	["?", "bad_end", "bad", 2]	]	  ],
 			[  "c4",		[	["tarantino", "d1", "maletin", 4],		["?", "d2", "puerta", 4]		]	  ],
 			[  "d1",		[	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]	  ],
 			[  "d2",		[	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]	  ]
