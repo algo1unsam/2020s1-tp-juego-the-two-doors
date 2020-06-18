@@ -132,7 +132,7 @@ class Opcion {
 						motorSonoro.playSound("explosion")
 						espera2 += 4000
 					} else {
-						motorSonoro.playSound("lock_opened")
+						motorSonoro.playSound("door_stuck")
 					}
 				} else if ( not escenaFinal ) {
 					fader2.fade("on")

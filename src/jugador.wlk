@@ -13,6 +13,8 @@ object jugador {
 
 	method image() = if (self.enIntro() or self.enCutscene() or cuarto.sinPuertas()) "invisible.png" else "you.png"
 	
+	method opcionElegida() = opcionElegida //Para testeo
+	
 	method esGameOver() = gameOver
 	method toggleGameOver() { gameOver = not(gameOver) }
 	
@@ -33,13 +35,13 @@ object jugador {
 		opcionElegida = cuarto.opcionIzquierda()
 		self.moverBajoOpcion()
 		fondoOpciones.cambiarFondoSiExiste("izquierda")
-		console.println(fondoOpciones.obtenerFondo("izquierda"))
+		//console.println(fondoOpciones.obtenerFondo("izquierda"))
 	}
 	method elegirOpcionDerecha() {		
 		opcionElegida = cuarto.opcionDerecha()
 		self.moverBajoOpcion()
 		fondoOpciones.cambiarFondoSiExiste("derecha")
-		console.println(fondoOpciones.obtenerFondo("derecha"))
+		//console.println(fondoOpciones.obtenerFondo("derecha"))
 	}
 	
 	method accionar() { 
