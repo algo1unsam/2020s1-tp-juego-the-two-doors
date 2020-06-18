@@ -1,0 +1,34 @@
+import jugador.*
+import cuartos.*
+import fondos.*
+
+describe "pruebas de timing" {
+
+	const cuartoInicial = new Cuarto(
+		idCuarto = "_intro"
+	)
+	fixture {
+		jugador.cambiarCuarto(cuartoInicial)
+	}
+	
+	method tieneFinal(cuartoActual) {	
+		return [0,1].all{
+			opcion =>
+			const destino = mapa.ruta(cuartoActual, opcion)
+			(["game_over", "good_end", "bad_end"].contains(destino) or self.tieneFinal(destino))
+		}
+	}
+	test "Jugador no puede cambiar puerta mientras esta en cutscene" {
+		const opcionUsada = jugador.opcionElegida()
+		jugador.switchCutscene()
+		jugador.elegirOpcionDerecha()
+		jugador.elegirOpcionIzquierda()
+		assert.equals(jugador.opcionElegida(), opcionUsada)
+	}
+	
+	 
+	test "Hay un final para cada opcion" {
+		assert.that( self.tieneFinal( cuartoInicial.idCuarto() ) )
+	}
+
+}
