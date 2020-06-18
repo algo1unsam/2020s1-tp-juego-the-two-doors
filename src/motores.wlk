@@ -128,6 +128,7 @@ object motorSonoro {
 			["jail_door", "jail_cell_door.mp3"],
 			["footsteps", "footsteps.ogg"],
 			["tiger", "snd_tiger.ogg"],
+			["lock_opened", "lock_opened.mp3"],
 			["explosion", "snd_explosion.ogg"]
 		].forEach({ elem => sonidosDisponibles.put(elem.get(0).toString(), elem.get(1)) })
 		

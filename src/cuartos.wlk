@@ -112,21 +112,35 @@ class Opcion {
 				var espera2 = 500
 				const fader2 = new FadeVisual()
 				//Casos particulares
-				game.addVisual(mensajeCuarto)
 				const tigreEnojado = propioCuarto.idCuarto() == "c1" and mensajeCuarto.nombre() == "bad"
+				const maletinAbierto = propioCuarto.idCuarto() == "d1" and mensajeCuarto.nombre() == "bad"
+				const puertaFinal = propioCuarto.idCuarto() == "d2"
+				if (!puertaFinal)
+					game.addVisual(mensajeCuarto)
 				if (tigreEnojado) {
 					motorSonoro.playSound("tiger")
-					console.println("test")
 					espera2 += 4700
 					game.schedule(espera2, {
 						self.prepararSigCuarto()
 					})
+				} else if (maletinAbierto) {
+					motorSonoro.playSound("lock_opened")
+					espera2 += 700
+				} else if (puertaFinal) {
+					espera2 += 700
+					if (mensajeCuarto.nombre() == "good") {
+						motorSonoro.playSound("explosion")
+						espera2 += 4000
+					} else {
+						motorSonoro.playSound("lock_opened")
+					}
 				} else if ( not escenaFinal ) {
 					fader2.fade("on")
 					game.addVisual(fader2)
 					fader2.fadeIn()
 				}
 				game.schedule(espera2, {				
+					if (puertaFinal) game.addVisual(mensajeCuarto)
 					if (game.hasVisual(fader2)) game.removeVisual(fader2)
 					console.println(mensajeCuarto.cuarto() + " - " + mensajeCuarto.nombre())
 					enTransicion = false
