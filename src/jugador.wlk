@@ -24,7 +24,7 @@ object jugador {
 	method cambiarCuarto(nuevoCuarto) {
 		cuarto = nuevoCuarto
 		cuarto.ingresar()
-		self.elegirPuertaIzquierda()
+		if (nuevoCuarto != "_intro") self.elegirPuertaIzquierda()
 	}
 
 	method moverBajoPuerta() { self.position(puertaElegida.position().down(2)) }
