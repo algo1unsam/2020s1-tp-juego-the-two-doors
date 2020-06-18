@@ -6,6 +6,8 @@ class FondoGrafico {
 	var fondoDefault = "none"
 	const fondos = [] //Usada puramente en inicializacion, luego se vacía.
 	
+	var property position = game.at(0,0)
+	
 	method image() =  fondosDisponibles.get(fondoActual)
 	
 	override method initialize() {	

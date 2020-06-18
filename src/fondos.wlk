@@ -19,4 +19,4 @@ const fondoOpciones = new FondoGrafico(
 	fondos = []
 )
 
-const fader = new FadeVisual()
+const mainFader = new FadeVisual()

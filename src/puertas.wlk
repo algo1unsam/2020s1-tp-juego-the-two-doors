@@ -1,6 +1,7 @@
 import wollok.game.*
 import motores.motorSonoro
 import motores.MensajeCuarto
+import motores.FadeVisual
 import fondos.*
 import jugador.*
 
@@ -88,28 +89,45 @@ class Puerta {
 		game.schedule(500, {
 			jugador.switchCutscene()
 			fondoOpciones.cambiarFondo("none")
-			if (esPuerta) fader.fadeOut()
+			if (esPuerta) {
+				motorSonoro.playSound("footsteps")
+				mainFader.fadeOut()
+			}
 			if (["good_end", "bad_end"].contains(mapa.ruta(propioCuarto.idCuarto(), idPuerta)))
 				motorSonoro.turnBGM(false)
-			game.schedule(1000, {
-				mensajeCuarto = new MensajeCuarto(
-					cuarto = propioCuarto.idCuarto(),
-					nombre = mapa.nombreMensaje(propioCuarto.idCuarto(), idPuerta),
-					cuadros = mapa.cuadrosMensaje(propioCuarto.idCuarto(), idPuerta)
-				)
-				game.addVisualIn(mensajeCuarto, game.at(0,0))
+			mensajeCuarto = new MensajeCuarto(
+				cuarto = propioCuarto.idCuarto(),
+				nombre = mapa.nombreMensaje(propioCuarto.idCuarto(), idPuerta),
+				cuadros = mapa.cuadrosMensaje(propioCuarto.idCuarto(), idPuerta)
+			)
+			const tigreEnojado = propioCuarto.idCuarto() == "c1" and mensajeCuarto.nombre() == "bad"
+			var espera1 = 3500
+			if (propioCuarto.idCuarto() == "_intro")
+				espera1 -= 1000
+			if (tigreEnojado)
+				espera1 -= 2500
+			game.schedule(espera1, {
+				var espera2 = 500
+				const fader2 = new FadeVisual()
 				//Casos particulares
-				console.println(mensajeCuarto.cuarto() + " - " + mensajeCuarto.nombre())
-				if (mensajeCuarto.cuarto() == "c1" and mensajeCuarto.nombre() == "bad") {
+				game.addVisual(mensajeCuarto)
+				if (tigreEnojado) {
 					motorSonoro.playSound("tiger")
 					console.println("test")
-					game.schedule(5200, {
+					espera2 += 4700
+					game.schedule(espera2, {
 						self.prepararSigCuarto()
-						enTransicion = false
 					})
-				} else {
-					enTransicion = false
+				} else /* Caso default */ {
+					fader2.fade("on")
+					game.addVisual(fader2)
+					fader2.fadeIn()
 				}
+				game.schedule(espera2, {				
+					if (game.hasVisual(fader2)) game.removeVisual(fader2)
+					console.println(mensajeCuarto.cuarto() + " - " + mensajeCuarto.nombre())
+					enTransicion = false
+				})
 			})
 		})
 	}
@@ -122,7 +140,7 @@ class Puerta {
 				fondoCuarto.cambiarFondo("game_over")
 				fondoOpciones.reemplazarFondos("none")
 				game.removeVisual(mensajeCuarto)
-				fader.fade("off")
+				mainFader.fade("off")
 			} else {			
 				const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
 				siguienteCuarto.puertaIzquierda().enTransicion(true)
@@ -131,9 +149,9 @@ class Puerta {
 				fondoOpciones.cambiarFondo("none")
 				game.removeVisual(mensajeCuarto)
 				if (fondoCuarto.existeFondo(idSiguienteCuarto))
-					fader.fade("off")
+					mainFader.fade("off")
 				else
-					fader.fadeIn()
+					mainFader.fadeIn()
 				game.schedule(1000, {
 					fondoOpciones.cambiarFondo("izquierda")
 					jugador.switchCutscene()

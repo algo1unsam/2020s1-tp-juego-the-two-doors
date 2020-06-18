@@ -22,7 +22,7 @@ program game {
 		if (jugador.esGameOver()) {
 			jugador.toggleGameOver()
 			jugador.cambiarCuarto(cuartoInicial)
-			fader.fade("off")
+			mainFader.fade("off")
 			motorSonoro.turnBGM(true)
 			jugador.switchCutscene()
 		} else {
@@ -33,14 +33,14 @@ program game {
 	
 	keyboard.m().onPressDo { motorSonoro.switchBGM() }			//Tecla mute, no borrar
 	keyboard.x().onPressDo { motorSonoro.reproducirBGM() }		//comandos debug de sonido
-	keyboard.f().onPressDo { fader.fadeSwitch() }		//comandos debug de fade
+	keyboard.f().onPressDo { mainFader.fadeSwitch() }		//comandos debug de fade
 	
 	jugador.cambiarCuarto(cuartoInicial)
 		
-	game.addVisualIn(fondoCuarto, game.at(0,0))
+	game.addVisual(fondoCuarto)
 	game.addVisual(jugador)
-	game.addVisualIn(fondoOpciones, game.at(0,0))
-	game.addVisualIn(fader, game.at(0,0))
+	game.addVisual(fondoOpciones)
+	game.addVisual(mainFader)
 	game.schedule(500, { motorSonoro.reproducirBGM() })
 	game.start()
 }
