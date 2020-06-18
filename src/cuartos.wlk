@@ -18,7 +18,7 @@ object mapa {
 			[  "b2",		[	["?", "game_over", "duda", 4],			["banana", "c4", "banana", 4]	]	  ],
 			[  "c1",		[	["acariciar", "bad_end", "bad", 3],		["?", "good_end", "good", 2]	]	  ],
 			[  "c2",		[	["cuchillo", "good_end", "good", 2],	["?", "bad_end", "bad", 2]	]	  ],
-			[  "c4",		[	["tarantino", "d1", "maletin", 4],		["?", "d2", "puerta", 4]		]	  ],
+			[  "c4",		[	["tarantino", "d1", "maletin", 4],		["?", "d2", "puerta_final", 4]		]	  ],
 			[  "d1",		[	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]	  ],
 			[  "d2",		[	["llave", "bad_end", "bad", 2],			["?", "good_end", "good", 2]	]	  ]
 		].forEach({ elem => opciones.put(elem.get(0).toString(), elem.get(1)) })
@@ -38,37 +38,36 @@ object mapa {
 
 class Cuarto {
 	const property idCuarto
-	const property puertaIzquierda = new Puerta(
+	const property opcionIzquierda = new Opcion(
 		position = ubicacionIzquierda,
 		propioCuarto = self,
-		idPuerta = 0
+		idOpcion = 0
 	)
-	const property puertaDerecha = new Puerta(
+	const property opcionDerecha = new Opcion(
 		position = ubicacionDerecha,
 		propioCuarto = self,
-		idPuerta = 1
+		idOpcion = 1
 	)
 
 	method ingresar() {
 		if (fondoCuarto.existeFondo(idCuarto)){			
 			fondoCuarto.cambiarFondo(idCuarto)
-			if (idCuarto != "_intro") [puertaIzquierda, puertaDerecha].forEach{ pue => pue.noEsPuerta() }
+			if (idCuarto != "_intro") [opcionIzquierda, opcionDerecha].forEach{ pue => pue.esPuerta(false) }
 		} else {
 			fondoCuarto.usarFondoDefault()
 		}
 	}
 	
-	method sinPuertas() = ([puertaDerecha, puertaIzquierda].any{elem => not elem.esPuerta()})
+	method sinPuertas() = ([opcionIzquierda, opcionDerecha].any{elem => not elem.esPuerta()})
 }
 
-class Puerta {
+class Opcion {
 	var property position
 	var propioCuarto
-	var property idPuerta
+	var property idOpcion
 	var mensajeCuarto = null
 	var property enTransicion = false
 	var property esPuerta = true
-	method noEsPuerta() { esPuerta = false }
 	method accion() {
 		if (propioCuarto.idCuarto() == "_intro") return "_intro2"
 		if (position == ubicacionIzquierda) return "izquierda"
@@ -95,14 +94,14 @@ class Puerta {
 				motorSonoro.playSound("footsteps")
 				mainFader.fadeOut()
 			}
-			if (["good_end", "bad_end"].contains(mapa.ruta(propioCuarto.idCuarto(), idPuerta)))
+			if (["good_end", "bad_end"].contains(mapa.ruta(propioCuarto.idCuarto(), idOpcion)))
 				motorSonoro.turnBGM(false)
 			mensajeCuarto = new MensajeCuarto(
 				cuarto = propioCuarto.idCuarto(),
-				nombre = mapa.nombreMensaje(propioCuarto.idCuarto(), idPuerta),
-				cuadros = mapa.cuadrosMensaje(propioCuarto.idCuarto(), idPuerta)
+				nombre = mapa.nombreMensaje(propioCuarto.idCuarto(), idOpcion),
+				cuadros = mapa.cuadrosMensaje(propioCuarto.idCuarto(), idOpcion)
 			)
-			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idPuerta)
+			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idOpcion)
 			const escenaFinal = ["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)
 			var espera1 = 3000
 			if (propioCuarto.idCuarto() == "_intro")
@@ -138,7 +137,7 @@ class Puerta {
 	method prepararSigCuarto() {
 		if (mensajeCuarto.finDeCuarto()) {
 			enTransicion = true
-			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idPuerta)
+			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idOpcion)
 			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
 				mainFader.fade("on")
 				game.removeVisual(mensajeCuarto)
@@ -150,7 +149,7 @@ class Puerta {
 				})
 			} else {			
 				const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
-				siguienteCuarto.puertaIzquierda().enTransicion(true)
+				siguienteCuarto.opcionIzquierda().enTransicion(true)
 				fondoOpciones.reemplazarFondos(idSiguienteCuarto)
 				jugador.cambiarCuarto(siguienteCuarto)
 				fondoOpciones.cambiarFondo("none")
@@ -163,7 +162,7 @@ class Puerta {
 					fondoOpciones.cambiarFondo("izquierda")
 					jugador.switchCutscene()
 					enTransicion = false
-					siguienteCuarto.puertaIzquierda().enTransicion(false)
+					siguienteCuarto.opcionIzquierda().enTransicion(false)
 				})
 				
 			}
