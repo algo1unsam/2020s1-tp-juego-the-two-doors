@@ -16,8 +16,8 @@ program game {
 	)
 	
 	
-	keyboard.left().onPressDo { jugador.elegirPuertaIzquierda() }
-	keyboard.right().onPressDo { jugador.elegirPuertaDerecha() }
+	keyboard.left().onPressDo { if (!jugador.enCutscene()) {jugador.elegirPuertaIzquierda()} }
+	keyboard.right().onPressDo { if (!jugador.enCutscene()) {jugador.elegirPuertaDerecha()} }
 	keyboard.enter().onPressDo { 
 		if (jugador.esGameOver()) {
 			jugador.empezarDeNuevo(cuartoInicial)

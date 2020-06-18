@@ -24,26 +24,22 @@ object jugador {
 	method cambiarCuarto(nuevoCuarto) {
 		cuarto = nuevoCuarto
 		cuarto.ingresar()
-		if (nuevoCuarto != "_intro") self.elegirPuertaIzquierda()
+		self.elegirPuertaIzquierda()
 	}
 
 	method moverBajoPuerta() { self.position(puertaElegida.position().down(2)) }
 	
 	method elegirPuertaIzquierda() { 
-		if (!enCutscene) {			
-			puertaElegida = cuarto.puertaIzquierda()
-			self.moverBajoPuerta()
-			fondoOpciones.cambiarFondoSiExiste("izquierda")
-			console.println(fondoOpciones.obtenerFondo("izquierda"))
-		}
+		puertaElegida = cuarto.puertaIzquierda()
+		self.moverBajoPuerta()
+		fondoOpciones.cambiarFondoSiExiste("izquierda")
+		console.println(fondoOpciones.obtenerFondo("izquierda"))
 	}
-	method elegirPuertaDerecha() {
-		if (!enCutscene) {			
-			puertaElegida = cuarto.puertaDerecha()
-			self.moverBajoPuerta()
-			fondoOpciones.cambiarFondoSiExiste("derecha")
-			console.println(fondoOpciones.obtenerFondo("derecha"))
-		}
+	method elegirPuertaDerecha() {		
+		puertaElegida = cuarto.puertaDerecha()
+		self.moverBajoPuerta()
+		fondoOpciones.cambiarFondoSiExiste("derecha")
+		console.println(fondoOpciones.obtenerFondo("derecha"))
 	}
 	
 	method usarPuerta() { 
