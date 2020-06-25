@@ -128,10 +128,7 @@ class Opcion {
 					espera2 += 700
 				} else if (puertaFinal) {
 					espera2 += 700
-					if (mensajeCuarto.nombre() == "good") {
-						motorSonoro.playSound("explosion")
-						espera2 += 4000
-					} else {
+					if (mensajeCuarto.nombre() == "bad") {
 						motorSonoro.playSound("door_stuck")
 					}
 				} else if ( not escenaFinal ) {
@@ -149,40 +146,49 @@ class Opcion {
 		})
 	}
 	method prepararSigCuarto() {
-		if (mensajeCuarto.finDeCuarto()) {
-			enTransicion = true
-			const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idOpcion)
-			if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
-				mainFader.fade("on")
-				game.removeVisual(mensajeCuarto)
-				fondoCuarto.cambiarFondo("game_over")
-				fondoOpciones.reemplazarFondos("none")
-				mainFader.fadeIn()
-				game.schedule(500, {					
-					jugador.toggleGameOver()
-				})
-			} else {			
-				const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
-				siguienteCuarto.opcionIzquierda().enTransicion(true)
-				fondoOpciones.reemplazarFondos(idSiguienteCuarto)
-				jugador.cambiarCuarto(siguienteCuarto)
-				fondoOpciones.cambiarFondo("none")
-				game.removeVisual(mensajeCuarto)
-				if (fondoCuarto.existeFondo(idSiguienteCuarto))
-					mainFader.fade("off")
-				else
+		console.println(">>>> " + mensajeCuarto.nombre() + " - " + mensajeCuarto.nombre() + " - " + mensajeCuarto.cuadroActual())
+		if (game.hasVisual(mensajeCuarto))
+			if (mensajeCuarto.finDeCuarto()) {
+				enTransicion = true
+				const idSiguienteCuarto = mapa.ruta(propioCuarto.idCuarto(), idOpcion)
+				if (["good_end", "bad_end", "game_over"].contains(idSiguienteCuarto)) {
+					mainFader.fade("on")
+					game.removeVisual(mensajeCuarto)
+					fondoCuarto.cambiarFondo("game_over")
+					fondoOpciones.reemplazarFondos("none")
 					mainFader.fadeIn()
-				game.schedule(1000, {
-					fondoOpciones.cambiarFondo("izquierda")
-					jugador.switchCutscene()
-					enTransicion = false
-					siguienteCuarto.opcionIzquierda().enTransicion(false)
-				})
+					game.schedule(500, {				
+						jugador.toggleGameOver()
+					})
+				} else {			
+					const siguienteCuarto = new Cuarto(idCuarto = idSiguienteCuarto)
+					siguienteCuarto.opcionIzquierda().enTransicion(true)
+					fondoOpciones.reemplazarFondos(idSiguienteCuarto)
+					jugador.cambiarCuarto(siguienteCuarto)
+					fondoOpciones.cambiarFondo("none")
+					game.removeVisual(mensajeCuarto)
+					if (fondoCuarto.existeFondo(idSiguienteCuarto))
+						mainFader.fade("off")
+					else
+						mainFader.fadeIn()
+					game.schedule(1000, {
+						fondoOpciones.cambiarFondo("izquierda")
+						jugador.switchCutscene()
+						enTransicion = false
+						siguienteCuarto.opcionIzquierda().enTransicion(false)
+					})
+					
+				}
 				
+			} else if (mensajeCuarto.cuarto() == "d2" and mensajeCuarto.nombre() == "good" and mensajeCuarto.cuadroActual() == 1) {
+				game.removeVisual(mensajeCuarto)
+				motorSonoro.playSound("explosion")
+				game.schedule(4000, {
+					mensajeCuarto.avanzar()
+					game.addVisual(mensajeCuarto)
+				})
+			} else {
+				mensajeCuarto.avanzar()
 			}
-			
-		}
-		else
-			mensajeCuarto.avanzar()
 	}
 }

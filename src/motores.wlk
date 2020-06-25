@@ -101,6 +101,7 @@ class MensajeCuarto inherits FondoGrafico {
 	const property nombre
 	const cuadros
 	var cuadroActual = 1
+	method cuadroActual() = cuadroActual
 	override method initialize() {
 		(1..cuadros).forEach{num => self.agregarFondo(nombre + num.toString(), "rooms/" + cuarto + "/" + nombre + " 0" + num + ".png")}
 		fondoActual = nombre + cuadroActual.toString()
